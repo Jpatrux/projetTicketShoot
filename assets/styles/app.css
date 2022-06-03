@@ -1,0 +1,33 @@
+body{
+    font-family: 'Permanent Marker', cursive;
+}
+
+.container{
+    max-width: 95%;
+}
+
+h1 {
+    color: #C15C44;
+}
+
+.btn-primary{
+    --bs-btn-bg: #C15C44 !important;
+    --bs-btn-border-color: #C15C44 !important;
+    --bs-btn-color: black;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #C15C44;
+    --bs-btn-hover-border-color: #C15C44;
+    --bs-btn-focus-shadow-rgb: 49,132,253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #C15C44;
+    --bs-btn-active-border-color: #C15C44;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #C15C44;
+    --bs-btn-disabled-border-color: #C15C44;
+}
+
+
+.display-1{
+    font-size: 7rem !important;
+}

@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Equipes index{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-10"></div>
+            <div class="col-2">
+                <a class="btn btn-lg btn-primary mt-4" href="{{ path('app_logout') }}">Déconnexion</a>
+            </div>
+        </div>
+        <div class="row vide1 mb-5">
+            <div class="col">
+
+            </div>
+        </div>
+<div class="row">
+    <div class="col-8">
+
+    </div>
+    <div class="col-4 mb-4">
+        <h2>Index des équipes</h2>
+    </div>
+</div>
+        <div class="row mt-4">
+            <div class="col-7">
+            </div>
+            <div class="col-4 d-flex justify-content-between">
+                    {% for team in teams %}
+
+                        <div class="card" style="width: 18rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ team.club }}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">{{ team.category }}</h6>
+                                <div class="d-flex justify-content-around">
+                                    <div id="cercle1" style="background: {{ team.color1 }}"></div>
+                                    <div id="cercle2" style="background: {{ team.color2 }}"></div>
+                                </div>
+                                <a href="{{ path('app_teams_show', {'id': team.id}) }}" class="card-link">Voir équipe</a>
+                                <a href="{{ path('app_teams_edit', {'id': team.id}) }}" class="card-link">Modifier équipe</a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <tr>
+                            <td colspan="6">no records found</td>
+                        </tr>
+                    {% endfor %}
+            </div>
+            <div class="row mt-4">
+
+            </div>
+
+            <div class="row vide1"></div>
+            <div class="row mt-5">
+                <div class="col-2">
+                    <a href="{{ path('app_main') }}"><img src="{{ asset('img/retour.png') }}" alt=""></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

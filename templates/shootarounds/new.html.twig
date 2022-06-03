@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle Séance{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-10"></div>
+            <div class="col-2">
+                <a class="btn btn-lg btn-primary mt-4" href="{{ path('app_logout') }}">Déconnexion</a>
+            </div>
+        </div>
+        <div class="row mt-2 mb-5">
+            <div class="col">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-8">
+            </div>
+            <div class="col-3">
+                <h1>Nouvelle séance</h1>
+
+                <img src="{{ asset('img/playground.jpg') }}" alt="terrain" usemap="#playground" id="playground"
+                     class="playground" width="500" height="400"/>
+
+                <map name="playground" id="playground">
+                    <!-- #$-:Image map file created by GIMP Image Map plug-in -->
+                    <!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
+                    <!-- #$-:Please do not edit lines starting with "#$" -->
+                    <!-- #$VERSION:2.3 -->
+                    <!-- #$AUTHOR:Stagiaire -->
+                    <area shape="rect" coords="68,236,89,342" target="position 1" alt="position 1" title="position 1"
+                          nohref="https://www.paris.fr"/>
+                    <area shape="poly" coords="68,235,68,152,164,150,131,174,110,199,100,218,91,235" target="position 2"
+                          alt="position 2" title="position 2" nohref="https://www.paris.fr"/>
+                    <area shape="poly"
+                          coords="70,57,70,152,169,148,203,135,240,131,276,134,303,142,319,148,421,151,419,57"
+                          target="position 3" alt="position 3" title="position 3" nohref="https://www.paris.fr"/>
+                    <area shape="poly" coords="419,153,420,238,397,239,385,212,371,191,353,173,338,161,320,150"
+                          target="position 4" alt="position 4" title="position 4" nohref="https://www.paris.fr"/>
+                    <area shape="rect" coords="398,240,420,342" target="position 5" alt="position 5" title="position 5"
+                          nohref="https://www.paris.fr"/>
+                    <area shape="poly" coords="92,342,194,340,194,296,95,230,95,231" target="position 6"
+                          alt="position 6" title="position 6" nohref="https://www.paris.fr"/>
+                    <area shape="poly" coords="195,295,96,228,116,197,152,161,176,149,218,228,217,259"
+                          target="position 7" alt="position 7" title="position 7" nohref="https://www.paris.fr"/>
+                    <area shape="poly" coords="178,148,217,135,257,135,289,140,317,152,274,239,223,239"
+                          target="position 8" alt="position 8" title="position 8" nohref="https://www.paris.fr"/>
+                    <area shape="poly"
+                          coords="320,152,344,168,365,189,378,206,387,222,395,238,291,289,275,259,276,237,276,236"
+                          target="position 9" alt="position 9" title="position 9" nohref="https://www.paris.fr"/>
+                    <area shape="poly" coords="289,341,394,341,394,241,290,291" target="position 10" alt="position 10"
+                          title="position 10" nohref="https://www.paris.fr"/>
+                    <area shape="poly" coords="200,340,197,296,220,258,221,241,274,241,274,261,287,288,286,339"
+                          target="position 11" alt="position 11" title="position 11" nohref="https://www.paris.fr"/>
+                </map>
+
+                {{ include('shootarounds/_form.html.twig') }}
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-2">
+                <a href="{{ path('app_main') }}"><img src="{{ asset('img/retour.png') }}" alt=""></a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        function myFunction(name) {
+            document.getElementById("info").innerHTML = name;
+        }
+    </script>
+    <script type="javascript" src="{{ asset('js/jquery.maphilight.min.js') }}"></script>
+    <script>$(function() {$('playground').maphilight();})</script>
+
+{% endblock %}

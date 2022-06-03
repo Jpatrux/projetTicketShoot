@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Shootarounds{% endblock %}
+
+{% block body %}
+    <h1>Shootarounds</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ shootaround.id }}</td>
+            </tr>
+            <tr>
+                <th>Made</th>
+                <td>{{ shootaround.made }}</td>
+            </tr>
+            <tr>
+                <th>Attempted</th>
+                <td>{{ shootaround.attempted }}</td>
+            </tr>
+            <tr>
+                <th>Place</th>
+                <td>{{ shootaround.place }}</td>
+            </tr>
+            <tr>
+                <th>Percentage</th>
+                <td>{{ shootaround.percentage }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ shootaround.date ? shootaround.date|date('Y-m-d') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_shootarounds_index') }}">back to list</a>
+
+    <a href="{{ path('app_shootarounds_edit', {'id': shootaround.id}) }}">edit</a>
+
+    {{ include('shootarounds/_delete_form.html.twig') }}
+{% endblock %}

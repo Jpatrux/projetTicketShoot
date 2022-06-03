@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ticket Shoot{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-10"></div>
+            <div class="col-2">
+                <a class="btn btn-lg btn-primary mt-4" href="{{ path('app_logout') }}">Déconnexion</a>
+            </div>
+        </div>
+        <div class="row vide2">
+
+        </div>
+        <div class="row vide1 mb-5">
+            <div class="col-7">
+            </div>
+            <div class="col-4">
+                {% if is_granted('ROLE_COACH') %}
+                    <h2>Bienvenue coach !</h2>
+                {% endif %}
+                {% if is_granted('ROLE_PLAYER') %}
+                    <h2>Bienvenue joueur !</h2>
+                {% endif %}
+
+            </div>
+        </div>
+        <div class="row mt-5 mb-5">
+            <div class="col-8">
+
+            </div>
+            <div class="col-3">
+                {% if is_granted('ROLE_COACH') %}
+                <a href="{{ path('app_teams_new') }}"><h3>Créer une équipe</h3></a>
+                {% endif %}
+                {% if is_granted('ROLE_PLAYER') %}
+                <a href="{{ path('app_shootarounds_new') }}"><h3>Nouvelle séance</h3></a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row mt-5 mb-5">
+            <div class="col-8">
+
+            </div>
+            <div class="col-3">
+                {% if is_granted('ROLE_COACH') %}
+                <a href="{{ path('app_teams_index') }}"><h3>Afficher une équipe</h3></a>
+                {% endif %}
+                {% if is_granted('ROLE_PLAYER') %}
+                <a href="{{ path('app_shootarounds_index') }}"><h3>Afficher les séances</h3></a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row mt-5 mb-5">
+            <div class="col-8">
+
+            </div>
+            <div class="col-3">
+                {% if is_granted('ROLE_COACH') %}
+                <a href="{{ path('app_compare') }}"><h3>Comparer des joueurs</h3></a>
+                {% endif %}
+
+                {% if is_granted('ROLE_PLAYER') %}
+                <a href="{{ path('app_stat') }}"><h3>Statistiques de tirs</h3></a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

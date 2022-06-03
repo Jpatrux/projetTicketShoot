@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Shootarounds{% endblock %}
+
+{% block body %}
+    <h1>Edit Shootarounds</h1>
+
+    {{ include('shootarounds/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_shootarounds_index') }}">back to list</a>
+
+    {{ include('shootarounds/_delete_form.html.twig') }}
+{% endblock %}

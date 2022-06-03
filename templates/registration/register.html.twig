@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Enregistrement d'un utilisateur{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-10"></div>
+            <div class="col-2">
+                <a class="btn btn-lg btn-primary mt-4" href="{{ path('app_logout') }}">Déconnexion</a>
+            </div>
+        </div>
+        <div class="row vide3">
+        </div>
+        <div class="row">
+            <div class="col-7"></div>
+            <div class="col-4">
+                <h2>Ajouter un joueur</h2>
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <div class="row mt-2 pt-5">
+            <div class="col-8">
+            </div>
+            <div class="col-3">
+
+                {{ form_start(registrationForm) }}
+                {{ form_row(registrationForm.username) }}
+                {{ form_row(registrationForm.plainPassword, {
+                    label: 'Password'
+                }) }}
+                {{ form_row(registrationForm.name) }}
+                {{ form_row(registrationForm.firstName) }}
+                {{ form_row(registrationForm.number) }}
+                {{ form_row(registrationForm.team) }}
+                {{ form_row(registrationForm.position) }}
+                {{ form_row(registrationForm.UserRoles) }}
+                {{ form_row(registrationForm.agreeTerms) }}
+                <div class="row">
+                    <div class="col-8"></div>
+                    <div class="col-2">
+                        <button type="submit" class="btn btn-primary mt-4">Enregistrement</button></div>
+                </div>
+
+                {{ form_end(registrationForm) }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-2">
+                <a href="{{ path('app_main') }}"><img src="{{ asset('img/retour.png') }}" alt=""></a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Shootarounds index{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-10"></div>
+            <div class="col-2">
+                <a class="btn btn-lg btn-primary mt-4" href="{{ path('app_logout') }}">Déconnexion</a>
+            </div>
+        </div>
+        <div class="row vide3 mt-3"></div>
+        <div class="row">
+            <div class="col-7"></div>
+            <div class="col-4">
+                <h2>Anciennes séances</h2>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-7"></div>
+            <div class="col-4"><h4>Choisir par date : du au </h4></div>
+        </div>
+        <div class="row mt-4"></div>
+        <div class="row">
+            <div class="col-6"></div>
+            <div class="col-6">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Séance</th>
+                        <th>Made</th>
+                        <th>Attempted</th>
+                        <th>Place</th>
+                        <th>Percentage</th>
+                        <th>Date</th>
+                        <th>actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for shootaround in shootarounds %}
+                        <tr>
+                            <td>Séance {{ shootaround.id }}</td>
+                            <td>{{ shootaround.made }} sur</td>
+                            <td>{{ shootaround.attempted }} au tir</td>
+                            <td>{{ shootaround.place }}</td>
+                            <td>{{ shootaround.percentage }} %</td>
+                            <td>{{ shootaround.date ? shootaround.date|date('Y-m-d') : '' }}</td>
+                            <td>
+                                <a href="{{ path('app_shootarounds_show', {'id': shootaround.id}) }}">show</a>
+                                <a href="{{ path('app_shootarounds_edit', {'id': shootaround.id}) }}">edit</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="7">no records found</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <a class="btn btn-primary" href="{{ path('app_shootarounds_new') }}">Nouvelle séance</a>
+            </div>
+        </div>
+
+
+        <div class="row mt-5">
+            <div class="col-2">
+                <a href="{{ path('app_main') }}"><img src="{{ asset('img/retour.png') }}" alt=""></a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
