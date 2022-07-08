@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Repository\ShootaroundRepository;
 use App\Repository\TeamRepository;
 use App\Repository\UsersRepository;
+use DateInterval;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -33,29 +35,44 @@ class MainController extends AbstractController
     public function compare(ChartBuilderInterface $chartBuilder, ShootaroundRepository $shootaroundRepository, TeamRepository $teamRepository, UsersRepository $usersRepository): Response
     {
 
+        $month = 12;
+        $arrayMonths = [];
+        $arrayDatas = [];
+        for ($i = $month; $i >= 0; $i--) {
+            $dateFirstDay = new DateTime();
+            $dateFirstDay->setDate($dateFirstDay->format("Y"), $dateFirstDay->format("m"), 1);
+            $arrayMonths[$dateFirstDay->sub((new DateInterval("P{$i}M")))->format("m/Y")] = 0;
+        }
+
+        $users = $usersRepository->findAll();
+        foreach ($users as $user) {
+            for ($i = $month; $i >= 0; $i--) {
+                $dateFirstDay = new DateTime();
+                $dateFirstDay->setDate($dateFirstDay->format("Y"), $dateFirstDay->format("m"), 1);
+                $arrayMonths[$dateFirstDay->sub((new DateInterval("P{$i}M")))->format("m/Y")] = 0;
+            }
+            $dateNow = new DateTime();
+            $dateSearch = $dateNow->sub(new DateInterval("P{$month}M"))->format("Y-m");
+            $countRequest = $shootaroundRepository->createQueryBuilder('shoot')
+                ->andWhere('shoot.date BETWEEN :start AND :end AND shoot.user = :user')
+                ->setParameter('start', $dateSearch . "-01 00:00:00")
+                ->setParameter('end', (new DateTime())->format("Y-m") . "-31 23:59:59")
+                ->setParameter('user', $user)
+                ->orderBy("shoot.date", "ASC")
+                ->getQuery()
+                ->getResult();
+            foreach ($countRequest as $shootaround) {
+                if (array_key_exists($shootaround->getDate()->format("m/Y"), $arrayMonths)) $arrayMonths[$shootaround->getDate()->format("m/Y")] += 1;
+                else $arrayMonths[$shootaround->getDate()->format("m/Y")] = 1;
+            }
+            $arrayDatas[$user->getUsername()] = $arrayMonths;
+        }
+
+        //dd($arrayDatas, $arrayMonths);
         $chart = $chartBuilder->createChart(Chart::TYPE_LINE);
         $chart->setData([
-            'labels' => ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
-            'datasets' => [
-                [
-                    'label' => 'Julien',
-                    'backgroundColor' => 'rgb(255, 99, 132)',
-                    'borderColor' => 'rgb(255, 99, 132)',
-                    'data' => [50, 80, 45, 62, 60, 50, 60, 45],
-                ],
-                [
-                    'label' => 'Laurence',
-                    'backgroundColor' => 'rgb(66, 135, 245)',
-                    'borderColor' => 'rgb(66, 135, 245)',
-                    'data' => [60, 72, 55, 42, 86, 70, 80, 95],
-                ],
-                [
-                    'label' => 'Stéphane',
-                    'backgroundColor' => 'rgb(175, 225, 175)',
-                    'borderColor' => 'rgb(175, 225, 175)',
-                    'data' => [35, 62, 57, 75, 68, 62, 75, 72],
-                ],
-            ],
+            'labels' => $arrayMonths,
+            'datasets' => $arrayDatas
         ]);
 
         $chart->setOptions([
