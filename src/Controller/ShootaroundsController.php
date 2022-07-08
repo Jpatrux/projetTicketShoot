@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Shootarounds;
 use App\Form\ShootaroundsType;
 use App\Repository\ShootaroundRepository;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -23,36 +24,28 @@ class ShootaroundsController extends AbstractController
      *
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_PLAYER')", message="Vous n'avez pas accès à cette page")
      */
-    #[Route('/', name: 'app_shootarounds_index', methods: ['GET'])]
-    public function index(FormBuilderInterface $builder, ShootaroundRepository $shootaroundRepository): Response
+    #[Route('/', name: 'app_shootarounds_index', methods: ['GET', 'POST'])]
+    public function index(Request $request, ShootaroundRepository $shootaroundRepository): Response
     {
-        //$dateRequest = $shootaroundRepository->createQueryBuilder('shoot')
-        //    ->andWhere('shoot.date BETWEEN :start AND :end ')
-        //    ->setParameter('start', $dateSearch . "input1")
-        //    ->setParameter('end', $dateSearch . "input2")
-        //    ->orderBy("shoot.id", "ASC")
-        //    ->getQuery()
-        //    ->getResult();
+        if ($request->getMethod()==="POST")
+        {
+            $dateStart = $request->get("dateStart");
+            $dateEnd = $request->get("dateEnd");
 
-        //$builder->add('start', DateType::class, [
-            // renders it as a single text box
-        //    'widget' => 'single_text',
-        //]);
-        //$builder->add('end', DateType::class, [
-            // renders it as a single text box
-        //    'widget' => 'single_text',
-        //]);
+
+            return new DateTime($dateEnd)>=new DateTime($dateStart) ?
+                $this->render('shootarounds/index.html.twig', ['shootarounds' => $shootaroundRepository->findByDate($dateStart, $dateEnd),
+                'errorMessage'=>null]) :
+                $this->render('shootarounds/index.html.twig', [
+                    'shootarounds' => null,
+                    'errorMessage'=>"La date n'est pas valide"
+                ]);
+        }
+
 
         return $this->render('shootarounds/index.html.twig', [
             'shootarounds' => $shootaroundRepository->findAll(),
-        ]);
-    }
-
-    #[Route('/date/{dateStart}/{dateEnd}', name: 'app_shootaroundsDate_index', methods: ['GET'])]
-    public function indexByDate(FormBuilderInterface $builder, ShootaroundRepository $shootaroundRepository, $dateStart, $dateEnd): Response
-    {
-        return $this->render('shootarounds/date.html.twig', [
-            'shootarounds' => $shootaroundRepository->findByDate($dateStart, $dateEnd),
+            'errorMessage'=>null
         ]);
     }
 

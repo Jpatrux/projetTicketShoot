@@ -18,8 +18,21 @@
             </div>
         </div>
         <div class="row mt-4">
-            <div class="col-7"></div>
-            <div class="col-4"><h4>Choisir par date : du au </h4></div>
+            <div class="col-6"></div>
+            <div class="col-6">
+                <form action="/shootarounds" method="post">
+                    <p class="h5 text-danger">{{ errorMessage }}</p>
+                    <h5>Choisir par date :
+                        <label>du
+                            <input type="date" name="dateStart">
+                        </label>
+                        <label>au
+                            <input type="date" name="dateEnd">
+                        </label>
+                        <button type="submit" class="btn btn-primary">Recherche</button>
+                    </h5>
+                </form>
+            </div>
         </div>
         <div class="row mt-4"></div>
         <div class="row">

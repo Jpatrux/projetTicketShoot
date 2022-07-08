@@ -35,22 +35,22 @@ class MainController extends AbstractController
 
         $chart = $chartBuilder->createChart(Chart::TYPE_LINE);
         $chart->setData([
-            'labels' => ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août'],
+            'labels' => ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
             'datasets' => [
                 [
-                    'label' => 'Joueur1',
+                    'label' => 'Julien',
                     'backgroundColor' => 'rgb(255, 99, 132)',
                     'borderColor' => 'rgb(255, 99, 132)',
                     'data' => [50, 80, 45, 62, 60, 50, 60, 45],
                 ],
                 [
-                    'label' => 'Joueur2',
+                    'label' => 'Laurence',
                     'backgroundColor' => 'rgb(66, 135, 245)',
                     'borderColor' => 'rgb(66, 135, 245)',
                     'data' => [60, 72, 55, 42, 86, 70, 80, 95],
                 ],
                 [
-                    'label' => 'Joueur3',
+                    'label' => 'Stéphane',
                     'backgroundColor' => 'rgb(175, 225, 175)',
                     'borderColor' => 'rgb(175, 225, 175)',
                     'data' => [35, 62, 57, 75, 68, 62, 75, 72],
@@ -87,10 +87,10 @@ class MainController extends AbstractController
 
         $stat = $chartBuilder->createChart(Chart::TYPE_LINE);
         $stat->setData([
-            'labels' => ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août'],
+            'labels' => ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
             'datasets' => [
                 [
-                    'label' => 'Joueur1',
+                    'label' => 'Julien',
                     'backgroundColor' => 'rgb(255, 99, 132)',
                     'borderColor' => 'rgb(255, 99, 132)',
                     'data' => [50, 80, 45, 62, 60, 50, 60, 45],
