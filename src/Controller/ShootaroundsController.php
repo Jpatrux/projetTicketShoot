@@ -15,7 +15,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 
-
 #[Route('/shootarounds')]
 class ShootaroundsController extends AbstractController
 {
@@ -27,28 +26,27 @@ class ShootaroundsController extends AbstractController
     #[Route('/', name: 'app_shootarounds_index', methods: ['GET', 'POST'])]
     public function index(Request $request, ShootaroundRepository $shootaroundRepository): Response
     {
-        if ($request->getMethod()==="POST")
-        {
+
+        if ($request->getMethod() === "POST") {
             $dateStart = $request->get("dateStart");
             $dateEnd = $request->get("dateEnd");
 
 
-            return new DateTime($dateEnd)>=new DateTime($dateStart) ?
+            return new DateTime($dateEnd) >= new DateTime($dateStart) ?
                 $this->render('shootarounds/index.html.twig', ['shootarounds' => $shootaroundRepository->findByDate($dateStart, $dateEnd),
-                'errorMessage'=>null]) :
+                    'errorMessage' => null]) :
                 $this->render('shootarounds/index.html.twig', [
                     'shootarounds' => null,
-                    'errorMessage'=>"La date n'est pas valide"
+                    'errorMessage' => "La date n'est pas valide"
                 ]);
         }
 
 
         return $this->render('shootarounds/index.html.twig', [
             'shootarounds' => $shootaroundRepository->findAll(),
-            'errorMessage'=>null
+            'errorMessage' => null
         ]);
     }
-
 
 
     /**
@@ -121,7 +119,7 @@ class ShootaroundsController extends AbstractController
     #[Route('/{id}', name: 'app_shootarounds_delete', methods: ['POST'])]
     public function delete(Request $request, Shootarounds $shootaround, ShootaroundRepository $shootaroundRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$shootaround->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $shootaround->getId(), $request->request->get('_token'))) {
             $shootaroundRepository->remove($shootaround, true);
         }
 

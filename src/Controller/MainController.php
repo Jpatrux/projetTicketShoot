@@ -44,36 +44,49 @@ class MainController extends AbstractController
             $arrayMonths[$dateFirstDay->sub((new DateInterval("P{$i}M")))->format("m/Y")] = 0;
         }
 
-        $users = $usersRepository->findAll();
-        foreach ($users as $user) {
-            for ($i = $month; $i >= 0; $i--) {
-                $dateFirstDay = new DateTime();
-                $dateFirstDay->setDate($dateFirstDay->format("Y"), $dateFirstDay->format("m"), 1);
-                $arrayMonths[$dateFirstDay->sub((new DateInterval("P{$i}M")))->format("m/Y")] = 0;
+        foreach ($arrayMonths as $key => $arrayMonth) {
+            $users = $usersRepository->findAll();
+            foreach ($users as $user) {
+
+                for ($i = $month; $i >= 0; $i--) {
+                    $dateFirstDay = new DateTime();
+                    $dateFirstDay->setDate($dateFirstDay->format("Y"), $dateFirstDay->format("m"), 1);
+                    $arrayMonths[$dateFirstDay->sub((new DateInterval("P{$i}M")))->format("m/Y")] = 0;
+                }
+                $dateOk = substr($key, -4) . "-" . substr($key, 0, 2);
+                $countRequest = $shootaroundRepository->createQueryBuilder('shoot')
+                    ->select('AVG(shoot.percentage)')
+                    ->andWhere('shoot.date BETWEEN :start AND :end AND shoot.user = :user')
+                    ->setParameter('start', $dateOk . "-01 00:00:00")
+                    ->setParameter('end', $dateOk . "-31 23:59:59")
+                    ->setParameter('user', $user)
+                    ->groupBy('shoot.user')
+                    ->orderBy('shoot.date', 'ASC')
+                    ->getQuery()
+                    ->getResult();
+                if (array_search("ROLE_PLAYER", $user->getRoles()) > -1) $arrayDatas[$user->getUsername()][$key] = $countRequest ? $countRequest[0][1] : 0;
             }
-            $dateNow = new DateTime();
-            $dateSearch = $dateNow->sub(new DateInterval("P{$month}M"))->format("Y-m");
-            $countRequest = $shootaroundRepository->createQueryBuilder('shoot')
-                ->andWhere('shoot.date BETWEEN :start AND :end AND shoot.user = :user')
-                ->setParameter('start', $dateSearch . "-01 00:00:00")
-                ->setParameter('end', (new DateTime())->format("Y-m") . "-31 23:59:59")
-                ->setParameter('user', $user)
-                ->orderBy("shoot.date", "ASC")
-                ->getQuery()
-                ->getResult();
-            foreach ($countRequest as $shootaround) {
-                if (array_key_exists($shootaround->getDate()->format("m/Y"), $arrayMonths)) $arrayMonths[$shootaround->getDate()->format("m/Y")] += 1;
-                else $arrayMonths[$shootaround->getDate()->format("m/Y")] = 1;
-            }
-            $arrayDatas[$user->getUsername()] = $arrayMonths;
         }
 
-        //dd($arrayDatas, $arrayMonths);
         $chart = $chartBuilder->createChart(Chart::TYPE_LINE);
+        $datasets = [];
+        $colors = 0;
+        foreach ($arrayDatas as $key => $data) {
+            $color = $getColors->color[$colors] ?? "rgb(" . rand(0, 255) . ", " . rand(0, 255) . ", " . rand(0, 255) . ")";
+            $datasets[] = [
+                'label' => $key,
+                'backgroundColor' => $color,
+                'borderColor' => $color,
+                'data' => $data
+            ];
+            $colors++;
+
+        }
         $chart->setData([
-            'labels' => $arrayMonths,
-            'datasets' => $arrayDatas
+            'labels' => array_keys($arrayMonths),
+            'datasets' => $datasets
         ]);
+
 
         $chart->setOptions([
             'responsive' => true,
