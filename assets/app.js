@@ -11,3 +11,4 @@ import './styles/style.css';
 
 // start the Stimulus application
 import './bootstrap';
+import './js/shoot';

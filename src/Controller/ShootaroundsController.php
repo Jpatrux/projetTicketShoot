@@ -64,6 +64,8 @@ class ShootaroundsController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $shootaround->setPercentage();
+            $shootaround->setUser($this->getUser());
+            $shootaround->setPlace($request->get('selectedPosition'));
             $shootaroundRepository->add($shootaround, true);
 
             return $this->redirectToRoute('app_shootarounds_index', [], Response::HTTP_SEE_OTHER);
