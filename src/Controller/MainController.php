@@ -115,18 +115,70 @@ class MainController extends AbstractController
     public function stat(ChartBuilderInterface $chartBuilder, ShootaroundRepository $shootaroundRepository, TeamRepository $teamRepository, UsersRepository $usersRepository): Response
     {
 
+        $month = 12;
+        $arrayMonths = [];
+        $arrayDatas = [];
+        for ($i = $month; $i >= 0; $i--) {
+            $dateFirstDay = new DateTime();
+            $dateFirstDay->setDate($dateFirstDay->format("Y"), $dateFirstDay->format("m"), 1);
+            $arrayMonths[$dateFirstDay->sub((new DateInterval("P{$i}M")))->format("m/Y")] = 0;
+        }
+
+        foreach ($arrayMonths as $key => $arrayMonth) {
+            $users = $usersRepository->findBy(['id' => $this->getUser()->getId()]);
+            foreach ($users as $user) {
+
+                for ($i = $month; $i >= 0; $i--) {
+                    $dateFirstDay = new DateTime();
+                    $dateFirstDay->setDate($dateFirstDay->format("Y"), $dateFirstDay->format("m"), 1);
+                    $arrayMonths[$dateFirstDay->sub((new DateInterval("P{$i}M")))->format("m/Y")] = 0;
+                }
+                $dateOk = substr($key, -4) . "-" . substr($key, 0, 2);
+                $countRequest = $shootaroundRepository->createQueryBuilder('shoot')
+                    ->select('AVG(shoot.percentage)')
+                    ->andWhere('shoot.date BETWEEN :start AND :end AND shoot.user = :user')
+                    ->setParameter('start', $dateOk . "-01 00:00:00")
+                    ->setParameter('end', $dateOk . "-31 23:59:59")
+                    ->setParameter('user', $user)
+                    ->groupBy('shoot.user')
+                    ->orderBy('shoot.date', 'ASC')
+                    ->getQuery()
+                    ->getResult();
+                if (array_search("ROLE_PLAYER", $user->getRoles()) > -1) $arrayDatas[$user->getUsername()][$key] = $countRequest ? $countRequest[0][1] : 0;
+            }
+        }
+
         $stat = $chartBuilder->createChart(Chart::TYPE_LINE);
+        $datasets = [];
+        $colors = 0;
+        foreach ($arrayDatas as $key => $data) {
+            $color = $getColors->color[$colors] ?? "rgb(" . rand(0, 255) . ", " . rand(0, 255) . ", " . rand(0, 255) . ")";
+            $datasets[] = [
+                'label' => $key,
+                'backgroundColor' => $color,
+                'borderColor' => $color,
+                'data' => $data
+            ];
+            $colors++;
+
+        }
         $stat->setData([
-            'labels' => ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
-            'datasets' => [
-                [
-                    'label' => 'Julien',
-                    'backgroundColor' => 'rgb(255, 99, 132)',
-                    'borderColor' => 'rgb(255, 99, 132)',
-                    'data' => [50, 80, 45, 62, 60, 50, 60, 45],
-                ],
-            ],
+            'labels' => array_keys($arrayMonths),
+            'datasets' => $datasets
         ]);
+
+//        $stat = $chartBuilder->createChart(Chart::TYPE_LINE);
+//        $stat->setData([
+//            'labels' => ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+//            'datasets' => [
+//                [
+//                    'label' => 'Julien',
+//                    'backgroundColor' => 'rgb(255, 99, 132)',
+//                    'borderColor' => 'rgb(255, 99, 132)',
+//                    'data' => [50, 80, 45, 62, 60, 50, 60, 45],
+//                ],
+//            ],
+//        ]);
 
         $stat->setOptions([
             'responsive' => true,
