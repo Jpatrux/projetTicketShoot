@@ -81,7 +81,7 @@ class Shootarounds
     public function setPercentage(): self
     {
 
-        $this->percentage = $this->made && $this->attempted ? ($this->made/$this->attempted) * 100 : null;
+        $this->percentage = $this->made && $this->attempted ? ($this->made / $this->attempted) * 100 : 0;
         return $this;
     }
 

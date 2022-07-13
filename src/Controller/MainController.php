@@ -124,7 +124,7 @@ class MainController extends AbstractController
                     'backgroundColor' => 'rgb(255, 99, 132)',
                     'borderColor' => 'rgb(255, 99, 132)',
                     'data' => [50, 80, 45, 62, 60, 50, 60, 45],
-                ]
+                ],
             ],
         ]);
 

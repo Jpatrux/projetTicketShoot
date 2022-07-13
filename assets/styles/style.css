@@ -1,36 +1,38 @@
-body{
+body {
     background-image: url("../../public/img/basket.jpg");
     background-repeat: no-repeat;
     color: white;
 }
-thead, tbody{
+
+thead, tbody {
     color: white;
 }
 
-.vide{
+.vide {
     height: 400px;
 }
 
-.vide1{
+.vide1 {
     height: 150px;
 }
 
-.vide2{
+.vide2 {
     height: 250px;
 }
 
-.vide3{
+.vide3 {
     height: 100px;
 }
 
-h2{
+h2 {
     font-size: 42px;
 }
 
-a{
+a {
     text-decoration: none;
     color: white;
 }
+
 a:hover {
     color: #C15C44;
 }
@@ -41,17 +43,19 @@ a:hover {
     border-radius: 20px;
 }
 
-.chart{
+.chart {
     background-color: white;
 }
 
-.card{
+.card {
     color: black !important;
 }
-.card a{
+
+.card a {
     color: black;
 }
-.card a:hover{
+
+.card a:hover {
     color: #C15C44;
 }
 
@@ -61,9 +65,24 @@ a:hover {
     border-radius: 20px;
     border: solid 1px lightgrey;
 }
+
 #cercle2 {
     width: 40px;
     height: 40px;
     border-radius: 20px;
     border: solid 1px lightgrey;
+}
+
+path {
+    fill: white;
+    stroke: black;
+    stroke-width: 1px;
+    transition: fill 0.5s;
+}
+
+path:hover {
+    cursor: pointer;
+    fill: #C15C44;
+    transition: fill 0.5s;
+
 }
